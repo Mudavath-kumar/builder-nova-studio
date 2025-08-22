@@ -41,7 +41,13 @@ export default async function handler(req, res) {
   const { url, method } = req;
   const urlPath = new URL(url, `http://${req.headers.host}`).pathname;
 
-  console.log(`${method} ${urlPath}`);
+  console.log(`=== API REQUEST DEBUG ===`);
+  console.log(`Method: ${method}`);
+  console.log(`URL: ${url}`);
+  console.log(`URL Path: ${urlPath}`);
+  console.log(`Headers:`, JSON.stringify(req.headers, null, 2));
+  console.log(`Body:`, req.body);
+  console.log(`========================`);
 
   try {
     // API Routes
@@ -175,7 +181,25 @@ export default async function handler(req, res) {
 
     // Handle API 404s
     if (urlPath.startsWith('/api/')) {
-      return res.status(404).json({ error: 'API endpoint not found' });
+      console.log(`❌ API 404: No handler found for ${method} ${urlPath}`);
+      console.log(`Available endpoints:`);
+      console.log(`- GET /api/health`);
+      console.log(`- GET /api/demo`);
+      console.log(`- POST /api/auth/signup`);
+      console.log(`- POST /api/auth/login`);
+      console.log(`- GET /api/dashboard`);
+      return res.status(404).json({ 
+        error: 'API endpoint not found',
+        method,
+        path: urlPath,
+        availableEndpoints: [
+          'GET /api/health',
+          'GET /api/demo', 
+          'POST /api/auth/signup',
+          'POST /api/auth/login',
+          'GET /api/dashboard'
+        ]
+      });
     }
 
     // Serve the React app for all other routes
