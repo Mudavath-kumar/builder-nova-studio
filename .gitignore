@@ -26,4 +26,33 @@ dist-ssr
 .config/
 !.env
 
+# Database
 /generated/prisma
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage/
+
+# Build outputs
+build/
+out/
+
+# Cache directories
+.cache/
+.parcel-cache/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# Temporary files
+*.tmp
+*.temp

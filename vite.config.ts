@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "127.0.0.1",
     port: 8080,
+    allowedHosts: [".clackypaas.com", "localhost", "127.0.0.1"],
     fs: {
       allow: ["./client", "./shared"],
       deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
