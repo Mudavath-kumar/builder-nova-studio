@@ -16,6 +16,9 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: "dist/spa",
   },
+  ssr: {
+    external: ["@prisma/client"],
+  },
   plugins: [react(), expressPlugin()],
   resolve: {
     alias: {
