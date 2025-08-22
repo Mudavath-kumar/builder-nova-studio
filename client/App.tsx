@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import Onboarding from "./pages/Onboarding";
+import PrescriptionUpload from "./pages/PrescriptionUpload";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import FloatingAIAssistant from "./components/ui/floating-ai-assistant";
@@ -52,6 +53,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/ai-chat" element={<AIChatPage />} />
           <Route path="/symptom-checker" element={<SymptomChecker />} />
+          <Route path="/prescription-upload" element={<PrescriptionUpload />} />
 
           {/* Authentication Routes */}
           <Route path="/login" element={<Login />} />
@@ -60,16 +62,6 @@ const App = () => (
           <Route path="/onboarding" element={<Onboarding />} />
 
           {/* Core Feature Routes - Already implemented above */}
-          <Route
-            path="/prescription-upload"
-            element={
-              <PlaceholderPage
-                title="Prescription Upload"
-                description="Scan and digitize your prescriptions with intelligent OCR technology."
-                icon={<Upload className="h-12 w-12 text-accent" />}
-              />
-            }
-          />
           <Route
             path="/emergency"
             element={
