@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AIChatPage from "./pages/AIChat";
+import SymptomChecker from "./pages/SymptomChecker";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import { Brain, Upload, Shield, FileText, Bell, Settings, User, Stethoscope, Video, BarChart, Users, HelpCircle, Info, Phone, LogIn, UserPlus, KeyRound, BookOpen } from "lucide-react";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/ai-chat" element={<AIChatPage />} />
+          <Route path="/symptom-checker" element={<SymptomChecker />} />
 
           {/* Authentication Routes */}
           <Route path="/login" element={
