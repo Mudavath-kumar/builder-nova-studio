@@ -12,6 +12,7 @@ import AIChatPage from "./pages/AIChat";
 import SymptomChecker from "./pages/SymptomChecker";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
+import FloatingAIAssistant from "./components/ui/floating-ai-assistant";
 import {
   Brain,
   Upload,
@@ -41,6 +42,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <FloatingAIAssistant />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -91,27 +93,7 @@ const App = () => (
             }
           />
 
-          {/* Core Feature Routes */}
-          <Route
-            path="/ai-chat"
-            element={
-              <PlaceholderPage
-                title="AI Chat Assistant"
-                description="Chat with your intelligent health assistant for personalized medical guidance."
-                icon={<Brain className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
-          <Route
-            path="/symptom-checker"
-            element={
-              <PlaceholderPage
-                title="Symptom Analysis"
-                description="Get AI-powered symptom analysis and personalized health recommendations."
-                icon={<Brain className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
+          {/* Core Feature Routes - Already implemented above */}
           <Route
             path="/prescription-upload"
             element={
