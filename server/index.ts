@@ -20,11 +20,15 @@ export function createServer() {
     res.json({ message: ping });
   });
 
+  app.get("/api/health", (_req, res) => {
+    res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  });
+
   app.get("/api/demo", handleDemo);
   app.get("/api/dashboard/metrics", authMiddleware, handleDashboardMetrics);
 
   // Auth routes
-  app.post("/api/auth/register", register);
+  app.post("/api/auth/signup", register);
   app.post("/api/auth/login", login);
 
   return app;

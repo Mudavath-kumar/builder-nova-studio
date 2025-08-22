@@ -24,7 +24,7 @@ export const register: RequestHandler = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
@@ -32,9 +32,23 @@ export const register: RequestHandler = async (req, res) => {
         lastName,
         dateOfBirth,
       },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        createdAt: true,
+      }
     });
 
-    res.status(201).json({ message: "User created successfully" });
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET || "your_jwt_secret",
+      { expiresIn: "7d" }
+    );
+
+    res.status(201).json({ user, token });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res
@@ -60,14 +74,22 @@ export const login: RequestHandler = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user.id },
+      { userId: user.id, email: user.email },
       process.env.JWT_SECRET || "your_jwt_secret",
       {
-        expiresIn: "1h",
+        expiresIn: "7d",
       },
     );
 
-    res.json({ token });
+    const userResponse = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      createdAt: user.createdAt,
+    };
+
+    res.json({ user: userResponse, token });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res
