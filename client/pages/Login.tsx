@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
-import { 
-  Heart, 
-  ArrowLeft, 
-  Mail, 
-  Lock, 
-  Eye, 
+import {
+  Heart,
+  ArrowLeft,
+  Mail,
+  Lock,
+  Eye,
   EyeOff,
   Chrome,
   Apple,
@@ -16,7 +16,7 @@ import {
   Zap,
   CheckCircle,
   AlertCircle,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -26,7 +26,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {},
+  );
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ export default function Login() {
     setTimeout(() => {
       setIsLoading(false);
       // Redirect to dashboard
-      window.location.href = '/dashboard';
+      window.location.href = "/dashboard";
     }, 2000);
   };
 
@@ -63,8 +65,14 @@ export default function Login() {
       {/* Animated Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute w-96 h-96 bg-neon-gradient rounded-full opacity-10 blur-3xl animate-float top-20 right-20" />
-        <div className="absolute w-64 h-64 bg-cyber-gradient rounded-full opacity-10 blur-3xl animate-float bottom-20 left-20" style={{ animationDelay: '2s' }} />
-        <div className="absolute w-80 h-80 bg-health-gradient rounded-full opacity-5 blur-3xl animate-float top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{ animationDelay: '4s' }} />
+        <div
+          className="absolute w-64 h-64 bg-cyber-gradient rounded-full opacity-10 blur-3xl animate-float bottom-20 left-20"
+          style={{ animationDelay: "2s" }}
+        />
+        <div
+          className="absolute w-80 h-80 bg-health-gradient rounded-full opacity-5 blur-3xl animate-float top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          style={{ animationDelay: "4s" }}
+        />
       </div>
 
       {/* Header */}
@@ -79,10 +87,12 @@ export default function Login() {
                 <span className="text-2xl font-bold bg-health-gradient bg-clip-text text-transparent">
                   HealPulse
                 </span>
-                <div className="text-xs text-foreground/60">AI Health Assistant</div>
+                <div className="text-xs text-foreground/60">
+                  AI Health Assistant
+                </div>
               </div>
             </Link>
-            
+
             <Link to="/">
               <Button variant="ghost" className="glass-button">
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -104,21 +114,29 @@ export default function Login() {
               </div>
               <div className="absolute -top-2 -right-2 w-6 h-6 bg-cyber-green rounded-full animate-ping" />
             </div>
-            
+
             <h1 className="text-4xl font-bold text-foreground mb-4">
               Welcome Back!
             </h1>
             <p className="text-foreground/70 leading-relaxed">
-              Sign in to continue your health journey with our AI-powered assistant
+              Sign in to continue your health journey with our AI-powered
+              assistant
             </p>
           </div>
 
           {/* Login Form */}
-          <GlassCard variant="primary" size="lg" hover="lift" className="slide-up">
+          <GlassCard
+            variant="primary"
+            size="lg"
+            hover="lift"
+            className="slide-up"
+          >
             <form onSubmit={handleLogin} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Email Address</label>
+                <label className="text-sm font-medium text-foreground">
+                  Email Address
+                </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                     <Mail className="h-5 w-5 text-primary/60" />
@@ -130,9 +148,9 @@ export default function Login() {
                     placeholder="Enter your email"
                     className={cn(
                       "w-full pl-10 pr-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300 text-foreground placeholder-foreground/50",
-                      errors.email 
-                        ? "border-health-red focus:border-health-red" 
-                        : "border-primary/30 focus:border-primary"
+                      errors.email
+                        ? "border-health-red focus:border-health-red"
+                        : "border-primary/30 focus:border-primary",
                     )}
                     disabled={isLoading}
                   />
@@ -152,7 +170,9 @@ export default function Login() {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Password</label>
+                <label className="text-sm font-medium text-foreground">
+                  Password
+                </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                     <Lock className="h-5 w-5 text-primary/60" />
@@ -164,9 +184,9 @@ export default function Login() {
                     placeholder="Enter your password"
                     className={cn(
                       "w-full pl-10 pr-12 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300 text-foreground placeholder-foreground/50",
-                      errors.password 
-                        ? "border-health-red focus:border-health-red" 
-                        : "border-primary/30 focus:border-primary"
+                      errors.password
+                        ? "border-health-red focus:border-health-red"
+                        : "border-primary/30 focus:border-primary",
                     )}
                     disabled={isLoading}
                   />
@@ -176,7 +196,11 @@ export default function Login() {
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary/60 hover:text-primary transition-colors"
                     disabled={isLoading}
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
@@ -190,11 +214,16 @@ export default function Login() {
               {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between">
                 <label className="flex items-center space-x-2 cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 text-primary rounded border-primary/30" />
-                  <span className="text-sm text-foreground/70">Remember me</span>
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 text-primary rounded border-primary/30"
+                  />
+                  <span className="text-sm text-foreground/70">
+                    Remember me
+                  </span>
                 </label>
-                <Link 
-                  to="/forgot-password" 
+                <Link
+                  to="/forgot-password"
                   className="text-sm text-primary hover:text-primary/80 transition-colors"
                 >
                   Forgot password?
@@ -226,7 +255,9 @@ export default function Login() {
                   <div className="w-full border-t border-primary/20" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-background text-foreground/60">Or continue with</span>
+                  <span className="px-4 bg-background text-foreground/60">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 
@@ -235,7 +266,7 @@ export default function Login() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => handleSocialLogin('google')}
+                  onClick={() => handleSocialLogin("google")}
                   disabled={isLoading}
                   className="glass-button py-3"
                 >
@@ -245,7 +276,7 @@ export default function Login() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => handleSocialLogin('apple')}
+                  onClick={() => handleSocialLogin("apple")}
                   disabled={isLoading}
                   className="glass-button py-3"
                 >
@@ -258,8 +289,8 @@ export default function Login() {
               <div className="text-center pt-4">
                 <p className="text-sm text-foreground/70">
                   Don't have an account?{" "}
-                  <Link 
-                    to="/signup" 
+                  <Link
+                    to="/signup"
                     className="text-primary hover:text-primary/80 font-medium transition-colors"
                   >
                     Sign up for free
@@ -277,14 +308,14 @@ export default function Login() {
                 <p className="text-xs text-foreground/70">HIPAA Secure</p>
               </div>
             </GlassCard>
-            
+
             <GlassCard variant="neon" size="sm" hover="lift">
               <div className="text-center space-y-2">
                 <CheckCircle className="h-6 w-6 text-cyber-green mx-auto" />
                 <p className="text-xs text-foreground/70">256-bit SSL</p>
               </div>
             </GlassCard>
-            
+
             <GlassCard variant="primary" size="sm" hover="lift">
               <div className="text-center space-y-2">
                 <Sparkles className="h-6 w-6 text-primary mx-auto animate-pulse" />

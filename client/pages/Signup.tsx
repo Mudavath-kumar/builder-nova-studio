@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
-import { 
-  Heart, 
-  ArrowLeft, 
+import {
+  Heart,
+  ArrowLeft,
   ArrowRight,
-  Mail, 
-  Lock, 
-  Eye, 
+  Mail,
+  Lock,
+  Eye,
   EyeOff,
   User,
   Phone,
@@ -23,7 +23,7 @@ import {
   AlertCircle,
   Loader2,
   Camera,
-  Upload
+  Upload,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -33,14 +33,14 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
-  
+
   // Step 2: Personal Info
   firstName: string;
   lastName: string;
   dateOfBirth: string;
   phone: string;
   address: string;
-  
+
   // Step 3: Health Profile
   bloodType: string;
   height: string;
@@ -53,7 +53,7 @@ interface FormData {
     phone: string;
     relationship: string;
   };
-  
+
   // Step 4: Preferences
   notifications: {
     medication: boolean;
@@ -61,7 +61,7 @@ interface FormData {
     healthTips: boolean;
     emergencyAlerts: boolean;
   };
-  privacyLevel: 'public' | 'private' | 'healthcare-only';
+  privacyLevel: "public" | "private" | "healthcare-only";
   profilePicture?: File;
 }
 
@@ -71,7 +71,7 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
+
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -90,27 +90,43 @@ export default function Signup() {
     emergencyContact: {
       name: "",
       phone: "",
-      relationship: ""
+      relationship: "",
     },
     notifications: {
       medication: true,
       appointments: true,
       healthTips: true,
-      emergencyAlerts: true
+      emergencyAlerts: true,
     },
-    privacyLevel: 'private'
+    privacyLevel: "private",
   });
 
   const totalSteps = 4;
 
-  const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-  const commonAllergies = ['Peanuts', 'Shellfish', 'Dairy', 'Eggs', 'Soy', 'Wheat', 'Tree Nuts', 'Fish'];
-  const relationships = ['Spouse', 'Parent', 'Sibling', 'Child', 'Friend', 'Other'];
+  const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const commonAllergies = [
+    "Peanuts",
+    "Shellfish",
+    "Dairy",
+    "Eggs",
+    "Soy",
+    "Wheat",
+    "Tree Nuts",
+    "Fish",
+  ];
+  const relationships = [
+    "Spouse",
+    "Parent",
+    "Sibling",
+    "Child",
+    "Friend",
+    "Other",
+  ];
 
   const updateFormData = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
   };
 
@@ -120,20 +136,27 @@ export default function Signup() {
     switch (step) {
       case 1:
         if (!formData.email) newErrors.email = "Email is required";
-        if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid";
+        if (!/\S+@\S+\.\S+/.test(formData.email))
+          newErrors.email = "Email is invalid";
         if (!formData.password) newErrors.password = "Password is required";
-        if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters";
-        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords don't match";
+        if (formData.password.length < 8)
+          newErrors.password = "Password must be at least 8 characters";
+        if (formData.password !== formData.confirmPassword)
+          newErrors.confirmPassword = "Passwords don't match";
         break;
       case 2:
         if (!formData.firstName) newErrors.firstName = "First name is required";
         if (!formData.lastName) newErrors.lastName = "Last name is required";
-        if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
+        if (!formData.dateOfBirth)
+          newErrors.dateOfBirth = "Date of birth is required";
         if (!formData.phone) newErrors.phone = "Phone number is required";
         break;
       case 3:
-        if (!formData.emergencyContact.name) newErrors.emergencyContactName = "Emergency contact name is required";
-        if (!formData.emergencyContact.phone) newErrors.emergencyContactPhone = "Emergency contact phone is required";
+        if (!formData.emergencyContact.name)
+          newErrors.emergencyContactName = "Emergency contact name is required";
+        if (!formData.emergencyContact.phone)
+          newErrors.emergencyContactPhone =
+            "Emergency contact phone is required";
         break;
     }
 
@@ -143,24 +166,24 @@ export default function Signup() {
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, totalSteps));
+      setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
     }
   };
 
   const handlePrev = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = async () => {
     if (!validateStep(currentStep)) return;
-    
+
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       // Redirect to onboarding
-      window.location.href = '/onboarding';
+      window.location.href = "/onboarding";
     }, 2000);
   };
 
@@ -173,13 +196,16 @@ export default function Signup() {
 
   const removeArrayItem = (field: keyof FormData, item: string) => {
     const currentArray = formData[field] as string[];
-    updateFormData(field, currentArray.filter(i => i !== item));
+    updateFormData(
+      field,
+      currentArray.filter((i) => i !== item),
+    );
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      updateFormData('profilePicture', file);
+      updateFormData("profilePicture", file);
     }
   };
 
@@ -188,7 +214,10 @@ export default function Signup() {
       {/* Animated Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute w-96 h-96 bg-neon-gradient rounded-full opacity-10 blur-3xl animate-float top-20 right-20" />
-        <div className="absolute w-64 h-64 bg-cyber-gradient rounded-full opacity-10 blur-3xl animate-float bottom-20 left-20" style={{ animationDelay: '2s' }} />
+        <div
+          className="absolute w-64 h-64 bg-cyber-gradient rounded-full opacity-10 blur-3xl animate-float bottom-20 left-20"
+          style={{ animationDelay: "2s" }}
+        />
       </div>
 
       {/* Header */}
@@ -203,10 +232,12 @@ export default function Signup() {
                 <span className="text-2xl font-bold bg-health-gradient bg-clip-text text-transparent">
                   HealPulse
                 </span>
-                <div className="text-xs text-foreground/60">Join the Health Revolution</div>
+                <div className="text-xs text-foreground/60">
+                  Join the Health Revolution
+                </div>
               </div>
             </Link>
-            
+
             <Link to="/login">
               <Button variant="ghost" className="glass-button">
                 Already have an account? Sign in
@@ -227,18 +258,20 @@ export default function Signup() {
             <p className="text-foreground/70 mb-8">
               Join thousands of users transforming their health journey with AI
             </p>
-            
+
             {/* Progress Bar */}
             <GlassCard variant="primary" size="sm" className="mb-8">
               <div className="flex items-center justify-between">
                 {Array.from({ length: totalSteps }, (_, i) => (
                   <div key={i} className="flex items-center">
-                    <div className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
-                      i + 1 <= currentStep 
-                        ? "bg-primary text-white" 
-                        : "bg-foreground/20 text-foreground/50"
-                    )}>
+                    <div
+                      className={cn(
+                        "w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
+                        i + 1 <= currentStep
+                          ? "bg-primary text-white"
+                          : "bg-foreground/20 text-foreground/50",
+                      )}
+                    >
                       {i + 1 <= currentStep ? (
                         <CheckCircle className="h-5 w-5" />
                       ) : (
@@ -246,18 +279,28 @@ export default function Signup() {
                       )}
                     </div>
                     {i < totalSteps - 1 && (
-                      <div className={cn(
-                        "w-16 h-1 mx-2 rounded-full transition-all duration-300",
-                        i + 1 < currentStep ? "bg-primary" : "bg-foreground/20"
-                      )} />
+                      <div
+                        className={cn(
+                          "w-16 h-1 mx-2 rounded-full transition-all duration-300",
+                          i + 1 < currentStep
+                            ? "bg-primary"
+                            : "bg-foreground/20",
+                        )}
+                      />
                     )}
                   </div>
                 ))}
               </div>
               <div className="text-center mt-4">
                 <p className="text-sm text-foreground/60">
-                  Step {currentStep} of {totalSteps}: {
-                    ['Account Setup', 'Personal Info', 'Health Profile', 'Preferences'][currentStep - 1]
+                  Step {currentStep} of {totalSteps}:{" "}
+                  {
+                    [
+                      "Account Setup",
+                      "Personal Info",
+                      "Health Profile",
+                      "Preferences",
+                    ][currentStep - 1]
                   }
                 </p>
               </div>
@@ -265,7 +308,12 @@ export default function Signup() {
           </div>
 
           {/* Form Steps */}
-          <GlassCard variant="default" size="lg" hover="lift" className="slide-up">
+          <GlassCard
+            variant="default"
+            size="lg"
+            hover="lift"
+            className="slide-up"
+          >
             {/* Step 1: Account Setup */}
             {currentStep === 1 && (
               <div className="space-y-6">
@@ -273,42 +321,58 @@ export default function Signup() {
                   <div className="w-16 h-16 bg-neon-gradient rounded-full flex items-center justify-center mx-auto mb-4 glow">
                     <Mail className="h-8 w-8 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground">Account Setup</h2>
-                  <p className="text-foreground/70">Create your secure HealPulse account</p>
+                  <h2 className="text-2xl font-bold text-foreground">
+                    Account Setup
+                  </h2>
+                  <p className="text-foreground/70">
+                    Create your secure HealPulse account
+                  </p>
                 </div>
 
                 {/* Email */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Email Address</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Email Address
+                  </label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary/60" />
                     <input
                       type="email"
                       value={formData.email}
-                      onChange={(e) => updateFormData('email', e.target.value)}
+                      onChange={(e) => updateFormData("email", e.target.value)}
                       placeholder="Enter your email"
                       className={cn(
                         "w-full pl-10 pr-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                        errors.email ? "border-health-red" : "border-primary/30 focus:border-primary"
+                        errors.email
+                          ? "border-health-red"
+                          : "border-primary/30 focus:border-primary",
                       )}
                     />
                   </div>
-                  {errors.email && <p className="text-sm text-health-red">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="text-sm text-health-red">{errors.email}</p>
+                  )}
                 </div>
 
                 {/* Password */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Password</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary/60" />
                     <input
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
-                      onChange={(e) => updateFormData('password', e.target.value)}
+                      onChange={(e) =>
+                        updateFormData("password", e.target.value)
+                      }
                       placeholder="Create a strong password"
                       className={cn(
                         "w-full pl-10 pr-12 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                        errors.password ? "border-health-red" : "border-primary/30 focus:border-primary"
+                        errors.password
+                          ? "border-health-red"
+                          : "border-primary/30 focus:border-primary",
                       )}
                     />
                     <button
@@ -316,36 +380,58 @@ export default function Signup() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary/60"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
-                  {errors.password && <p className="text-sm text-health-red">{errors.password}</p>}
+                  {errors.password && (
+                    <p className="text-sm text-health-red">{errors.password}</p>
+                  )}
                 </div>
 
                 {/* Confirm Password */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Confirm Password</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Confirm Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary/60" />
                     <input
                       type={showConfirmPassword ? "text" : "password"}
                       value={formData.confirmPassword}
-                      onChange={(e) => updateFormData('confirmPassword', e.target.value)}
+                      onChange={(e) =>
+                        updateFormData("confirmPassword", e.target.value)
+                      }
                       placeholder="Confirm your password"
                       className={cn(
                         "w-full pl-10 pr-12 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                        errors.confirmPassword ? "border-health-red" : "border-primary/30 focus:border-primary"
+                        errors.confirmPassword
+                          ? "border-health-red"
+                          : "border-primary/30 focus:border-primary",
                       )}
                     />
                     <button
                       type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary/60"
                     >
-                      {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
-                  {errors.confirmPassword && <p className="text-sm text-health-red">{errors.confirmPassword}</p>}
+                  {errors.confirmPassword && (
+                    <p className="text-sm text-health-red">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
                 </div>
 
                 {/* Social Signup */}
@@ -354,7 +440,9 @@ export default function Signup() {
                     <div className="w-full border-t border-primary/20" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-background text-foreground/60">Or sign up with</span>
+                    <span className="px-4 bg-background text-foreground/60">
+                      Or sign up with
+                    </span>
                   </div>
                 </div>
 
@@ -378,84 +466,126 @@ export default function Signup() {
                   <div className="w-16 h-16 bg-cyber-gradient rounded-full flex items-center justify-center mx-auto mb-4 glow">
                     <User className="h-8 w-8 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground">Personal Information</h2>
+                  <h2 className="text-2xl font-bold text-foreground">
+                    Personal Information
+                  </h2>
                   <p className="text-foreground/70">Tell us about yourself</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">First Name</label>
+                    <label className="text-sm font-medium text-foreground">
+                      First Name
+                    </label>
                     <input
                       type="text"
                       value={formData.firstName}
-                      onChange={(e) => updateFormData('firstName', e.target.value)}
+                      onChange={(e) =>
+                        updateFormData("firstName", e.target.value)
+                      }
                       placeholder="John"
                       className={cn(
                         "w-full px-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                        errors.firstName ? "border-health-red" : "border-primary/30 focus:border-primary"
+                        errors.firstName
+                          ? "border-health-red"
+                          : "border-primary/30 focus:border-primary",
                       )}
                     />
-                    {errors.firstName && <p className="text-sm text-health-red">{errors.firstName}</p>}
+                    {errors.firstName && (
+                      <p className="text-sm text-health-red">
+                        {errors.firstName}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Last Name</label>
+                    <label className="text-sm font-medium text-foreground">
+                      Last Name
+                    </label>
                     <input
                       type="text"
                       value={formData.lastName}
-                      onChange={(e) => updateFormData('lastName', e.target.value)}
+                      onChange={(e) =>
+                        updateFormData("lastName", e.target.value)
+                      }
                       placeholder="Doe"
                       className={cn(
                         "w-full px-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                        errors.lastName ? "border-health-red" : "border-primary/30 focus:border-primary"
+                        errors.lastName
+                          ? "border-health-red"
+                          : "border-primary/30 focus:border-primary",
                       )}
                     />
-                    {errors.lastName && <p className="text-sm text-health-red">{errors.lastName}</p>}
+                    {errors.lastName && (
+                      <p className="text-sm text-health-red">
+                        {errors.lastName}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Date of Birth</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Date of Birth
+                  </label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary/60" />
                     <input
                       type="date"
                       value={formData.dateOfBirth}
-                      onChange={(e) => updateFormData('dateOfBirth', e.target.value)}
+                      onChange={(e) =>
+                        updateFormData("dateOfBirth", e.target.value)
+                      }
                       className={cn(
                         "w-full pl-10 pr-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                        errors.dateOfBirth ? "border-health-red" : "border-primary/30 focus:border-primary"
+                        errors.dateOfBirth
+                          ? "border-health-red"
+                          : "border-primary/30 focus:border-primary",
                       )}
                     />
                   </div>
-                  {errors.dateOfBirth && <p className="text-sm text-health-red">{errors.dateOfBirth}</p>}
+                  {errors.dateOfBirth && (
+                    <p className="text-sm text-health-red">
+                      {errors.dateOfBirth}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Phone Number</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Phone Number
+                  </label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary/60" />
                     <input
                       type="tel"
                       value={formData.phone}
-                      onChange={(e) => updateFormData('phone', e.target.value)}
+                      onChange={(e) => updateFormData("phone", e.target.value)}
                       placeholder="+1 (555) 123-4567"
                       className={cn(
                         "w-full pl-10 pr-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                        errors.phone ? "border-health-red" : "border-primary/30 focus:border-primary"
+                        errors.phone
+                          ? "border-health-red"
+                          : "border-primary/30 focus:border-primary",
                       )}
                     />
                   </div>
-                  {errors.phone && <p className="text-sm text-health-red">{errors.phone}</p>}
+                  {errors.phone && (
+                    <p className="text-sm text-health-red">{errors.phone}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Address</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Address
+                  </label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 h-5 w-5 text-primary/60" />
                     <textarea
                       value={formData.address}
-                      onChange={(e) => updateFormData('address', e.target.value)}
+                      onChange={(e) =>
+                        updateFormData("address", e.target.value)
+                      }
                       placeholder="123 Main St, City, State, ZIP"
                       rows={3}
                       className="w-full pl-10 pr-4 py-3 bg-primary/10 border border-primary/30 rounded-2xl outline-none focus:border-primary transition-all duration-300 resize-none"
@@ -472,42 +602,56 @@ export default function Signup() {
                   <div className="w-16 h-16 bg-health-gradient rounded-full flex items-center justify-center mx-auto mb-4 glow">
                     <Heart className="h-8 w-8 text-white heartbeat" />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground">Health Profile</h2>
-                  <p className="text-foreground/70">Help us personalize your care</p>
+                  <h2 className="text-2xl font-bold text-foreground">
+                    Health Profile
+                  </h2>
+                  <p className="text-foreground/70">
+                    Help us personalize your care
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Blood Type</label>
+                    <label className="text-sm font-medium text-foreground">
+                      Blood Type
+                    </label>
                     <select
                       value={formData.bloodType}
-                      onChange={(e) => updateFormData('bloodType', e.target.value)}
+                      onChange={(e) =>
+                        updateFormData("bloodType", e.target.value)
+                      }
                       className="w-full px-4 py-3 bg-primary/10 border border-primary/30 rounded-2xl outline-none focus:border-primary transition-all duration-300"
                     >
                       <option value="">Select</option>
-                      {bloodTypes.map(type => (
-                        <option key={type} value={type}>{type}</option>
+                      {bloodTypes.map((type) => (
+                        <option key={type} value={type}>
+                          {type}
+                        </option>
                       ))}
                     </select>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Height (ft)</label>
+                    <label className="text-sm font-medium text-foreground">
+                      Height (ft)
+                    </label>
                     <input
                       type="text"
                       value={formData.height}
-                      onChange={(e) => updateFormData('height', e.target.value)}
+                      onChange={(e) => updateFormData("height", e.target.value)}
                       placeholder="5'10''"
                       className="w-full px-4 py-3 bg-primary/10 border border-primary/30 rounded-2xl outline-none focus:border-primary transition-all duration-300"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Weight (lbs)</label>
+                    <label className="text-sm font-medium text-foreground">
+                      Weight (lbs)
+                    </label>
                     <input
                       type="text"
                       value={formData.weight}
-                      onChange={(e) => updateFormData('weight', e.target.value)}
+                      onChange={(e) => updateFormData("weight", e.target.value)}
                       placeholder="150"
                       className="w-full px-4 py-3 bg-primary/10 border border-primary/30 rounded-2xl outline-none focus:border-primary transition-all duration-300"
                     />
@@ -516,18 +660,24 @@ export default function Signup() {
 
                 {/* Allergies */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-foreground">Allergies</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Allergies
+                  </label>
                   <div className="grid grid-cols-4 gap-2">
-                    {commonAllergies.map(allergy => (
+                    {commonAllergies.map((allergy) => (
                       <Button
                         key={allergy}
                         type="button"
-                        variant={formData.allergies.includes(allergy) ? "default" : "outline"}
+                        variant={
+                          formData.allergies.includes(allergy)
+                            ? "default"
+                            : "outline"
+                        }
                         size="sm"
-                        onClick={() => 
-                          formData.allergies.includes(allergy) 
-                            ? removeArrayItem('allergies', allergy)
-                            : addArrayItem('allergies', allergy)
+                        onClick={() =>
+                          formData.allergies.includes(allergy)
+                            ? removeArrayItem("allergies", allergy)
+                            : addArrayItem("allergies", allergy)
                         }
                         className="text-xs"
                       >
@@ -539,59 +689,87 @@ export default function Signup() {
 
                 {/* Emergency Contact */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">Emergency Contact</h3>
-                  
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Emergency Contact
+                  </h3>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-foreground">Name</label>
+                      <label className="text-sm font-medium text-foreground">
+                        Name
+                      </label>
                       <input
                         type="text"
                         value={formData.emergencyContact.name}
-                        onChange={(e) => updateFormData('emergencyContact', {
-                          ...formData.emergencyContact,
-                          name: e.target.value
-                        })}
+                        onChange={(e) =>
+                          updateFormData("emergencyContact", {
+                            ...formData.emergencyContact,
+                            name: e.target.value,
+                          })
+                        }
                         placeholder="Contact name"
                         className={cn(
                           "w-full px-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                          errors.emergencyContactName ? "border-health-red" : "border-primary/30 focus:border-primary"
+                          errors.emergencyContactName
+                            ? "border-health-red"
+                            : "border-primary/30 focus:border-primary",
                         )}
                       />
-                      {errors.emergencyContactName && <p className="text-sm text-health-red">{errors.emergencyContactName}</p>}
+                      {errors.emergencyContactName && (
+                        <p className="text-sm text-health-red">
+                          {errors.emergencyContactName}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-foreground">Phone</label>
+                      <label className="text-sm font-medium text-foreground">
+                        Phone
+                      </label>
                       <input
                         type="tel"
                         value={formData.emergencyContact.phone}
-                        onChange={(e) => updateFormData('emergencyContact', {
-                          ...formData.emergencyContact,
-                          phone: e.target.value
-                        })}
+                        onChange={(e) =>
+                          updateFormData("emergencyContact", {
+                            ...formData.emergencyContact,
+                            phone: e.target.value,
+                          })
+                        }
                         placeholder="Contact phone"
                         className={cn(
                           "w-full px-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300",
-                          errors.emergencyContactPhone ? "border-health-red" : "border-primary/30 focus:border-primary"
+                          errors.emergencyContactPhone
+                            ? "border-health-red"
+                            : "border-primary/30 focus:border-primary",
                         )}
                       />
-                      {errors.emergencyContactPhone && <p className="text-sm text-health-red">{errors.emergencyContactPhone}</p>}
+                      {errors.emergencyContactPhone && (
+                        <p className="text-sm text-health-red">
+                          {errors.emergencyContactPhone}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Relationship</label>
+                    <label className="text-sm font-medium text-foreground">
+                      Relationship
+                    </label>
                     <select
                       value={formData.emergencyContact.relationship}
-                      onChange={(e) => updateFormData('emergencyContact', {
-                        ...formData.emergencyContact,
-                        relationship: e.target.value
-                      })}
+                      onChange={(e) =>
+                        updateFormData("emergencyContact", {
+                          ...formData.emergencyContact,
+                          relationship: e.target.value,
+                        })
+                      }
                       className="w-full px-4 py-3 bg-primary/10 border border-primary/30 rounded-2xl outline-none focus:border-primary transition-all duration-300"
                     >
                       <option value="">Select relationship</option>
-                      {relationships.map(rel => (
-                        <option key={rel} value={rel}>{rel}</option>
+                      {relationships.map((rel) => (
+                        <option key={rel} value={rel}>
+                          {rel}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -606,19 +784,25 @@ export default function Signup() {
                   <div className="w-16 h-16 bg-neon-gradient rounded-full flex items-center justify-center mx-auto mb-4 glow">
                     <Sparkles className="h-8 w-8 text-white animate-pulse" />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground">Preferences</h2>
-                  <p className="text-foreground/70">Customize your HealPulse experience</p>
+                  <h2 className="text-2xl font-bold text-foreground">
+                    Preferences
+                  </h2>
+                  <p className="text-foreground/70">
+                    Customize your HealPulse experience
+                  </p>
                 </div>
 
                 {/* Profile Picture */}
                 <div className="space-y-4">
-                  <label className="text-sm font-medium text-foreground">Profile Picture (Optional)</label>
+                  <label className="text-sm font-medium text-foreground">
+                    Profile Picture (Optional)
+                  </label>
                   <div className="flex items-center space-x-4">
                     <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
                       {formData.profilePicture ? (
-                        <img 
-                          src={URL.createObjectURL(formData.profilePicture)} 
-                          alt="Profile" 
+                        <img
+                          src={URL.createObjectURL(formData.profilePicture)}
+                          alt="Profile"
                           className="w-20 h-20 rounded-full object-cover"
                         />
                       ) : (
@@ -634,7 +818,11 @@ export default function Signup() {
                         id="profile-upload"
                       />
                       <label htmlFor="profile-upload">
-                        <Button type="button" variant="outline" className="glass-button cursor-pointer">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="glass-button cursor-pointer"
+                        >
                           <Upload className="h-4 w-4 mr-2" />
                           Upload Photo
                         </Button>
@@ -645,48 +833,80 @@ export default function Signup() {
 
                 {/* Notifications */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">Notification Preferences</h3>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Notification Preferences
+                  </h3>
                   <div className="space-y-3">
-                    {Object.entries(formData.notifications).map(([key, value]) => (
-                      <label key={key} className="flex items-center justify-between cursor-pointer">
-                        <span className="text-sm text-foreground capitalize">
-                          {key.replace(/([A-Z])/g, ' $1').trim()}
-                        </span>
-                        <input
-                          type="checkbox"
-                          checked={value}
-                          onChange={(e) => updateFormData('notifications', {
-                            ...formData.notifications,
-                            [key]: e.target.checked
-                          })}
-                          className="w-4 h-4 text-primary rounded border-primary/30"
-                        />
-                      </label>
-                    ))}
+                    {Object.entries(formData.notifications).map(
+                      ([key, value]) => (
+                        <label
+                          key={key}
+                          className="flex items-center justify-between cursor-pointer"
+                        >
+                          <span className="text-sm text-foreground capitalize">
+                            {key.replace(/([A-Z])/g, " $1").trim()}
+                          </span>
+                          <input
+                            type="checkbox"
+                            checked={value}
+                            onChange={(e) =>
+                              updateFormData("notifications", {
+                                ...formData.notifications,
+                                [key]: e.target.checked,
+                              })
+                            }
+                            className="w-4 h-4 text-primary rounded border-primary/30"
+                          />
+                        </label>
+                      ),
+                    )}
                   </div>
                 </div>
 
                 {/* Privacy Level */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">Privacy Level</h3>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Privacy Level
+                  </h3>
                   <div className="space-y-2">
                     {[
-                      { value: 'private', label: 'Private', desc: 'Only you can see your data' },
-                      { value: 'healthcare-only', label: 'Healthcare Only', desc: 'Share with healthcare providers only' },
-                      { value: 'public', label: 'Public', desc: 'Anonymized data for research' }
-                    ].map(option => (
-                      <label key={option.value} className="flex items-center space-x-3 cursor-pointer p-3 rounded-2xl hover:bg-primary/5 transition-colors">
+                      {
+                        value: "private",
+                        label: "Private",
+                        desc: "Only you can see your data",
+                      },
+                      {
+                        value: "healthcare-only",
+                        label: "Healthcare Only",
+                        desc: "Share with healthcare providers only",
+                      },
+                      {
+                        value: "public",
+                        label: "Public",
+                        desc: "Anonymized data for research",
+                      },
+                    ].map((option) => (
+                      <label
+                        key={option.value}
+                        className="flex items-center space-x-3 cursor-pointer p-3 rounded-2xl hover:bg-primary/5 transition-colors"
+                      >
                         <input
                           type="radio"
                           name="privacy"
                           value={option.value}
                           checked={formData.privacyLevel === option.value}
-                          onChange={(e) => updateFormData('privacyLevel', e.target.value)}
+                          onChange={(e) =>
+                            updateFormData("privacyLevel", e.target.value)
+                          }
                           className="w-4 h-4 text-primary"
                         />
                         <div>
-                          <div className="font-medium text-foreground">{option.label}</div>
-                          <div className="text-sm text-foreground/70">{option.desc}</div>
+                          <div className="font-medium text-foreground">
+                            {option.label}
+                          </div>
+                          <div className="text-sm text-foreground/70">
+                            {option.desc}
+                          </div>
                         </div>
                       </label>
                     ))}
@@ -748,14 +968,14 @@ export default function Signup() {
                 <p className="text-xs text-foreground/70">HIPAA Secure</p>
               </div>
             </GlassCard>
-            
+
             <GlassCard variant="neon" size="sm" hover="lift">
               <div className="text-center space-y-2">
                 <CheckCircle className="h-6 w-6 text-cyber-green mx-auto" />
                 <p className="text-xs text-foreground/70">AI Protected</p>
               </div>
             </GlassCard>
-            
+
             <GlassCard variant="primary" size="sm" hover="lift">
               <div className="text-center space-y-2">
                 <Brain className="h-6 w-6 text-primary mx-auto animate-pulse" />

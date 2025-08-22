@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
-import { 
-  Heart, 
-  ArrowLeft, 
-  Mail, 
+import {
+  Heart,
+  ArrowLeft,
+  Mail,
   Send,
   CheckCircle,
   AlertCircle,
@@ -13,7 +13,7 @@ import {
   Clock,
   KeyRound,
   Sparkles,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -29,29 +29,29 @@ export default function ForgotPassword() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    
+
     if (!email) {
       setError("Email is required");
       return;
     }
-    
+
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError("Please enter a valid email address");
       return;
     }
 
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       setIsEmailSent(true);
-      setResendCount(prev => prev + 1);
-      
+      setResendCount((prev) => prev + 1);
+
       // Start cooldown for resend
       setCooldownTime(60);
       const interval = setInterval(() => {
-        setCooldownTime(prev => {
+        setCooldownTime((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
             return 0;
@@ -72,8 +72,14 @@ export default function ForgotPassword() {
       {/* Animated Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute w-96 h-96 bg-neon-gradient rounded-full opacity-10 blur-3xl animate-float top-20 right-20" />
-        <div className="absolute w-64 h-64 bg-cyber-gradient rounded-full opacity-10 blur-3xl animate-float bottom-20 left-20" style={{ animationDelay: '2s' }} />
-        <div className="absolute w-80 h-80 bg-health-gradient rounded-full opacity-5 blur-3xl animate-float top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" style={{ animationDelay: '4s' }} />
+        <div
+          className="absolute w-64 h-64 bg-cyber-gradient rounded-full opacity-10 blur-3xl animate-float bottom-20 left-20"
+          style={{ animationDelay: "2s" }}
+        />
+        <div
+          className="absolute w-80 h-80 bg-health-gradient rounded-full opacity-5 blur-3xl animate-float top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          style={{ animationDelay: "4s" }}
+        />
       </div>
 
       {/* Header */}
@@ -88,10 +94,12 @@ export default function ForgotPassword() {
                 <span className="text-2xl font-bold bg-health-gradient bg-clip-text text-transparent">
                   HealPulse
                 </span>
-                <div className="text-xs text-foreground/60">Password Recovery</div>
+                <div className="text-xs text-foreground/60">
+                  Password Recovery
+                </div>
               </div>
             </Link>
-            
+
             <div className="flex items-center space-x-4">
               <Link to="/login">
                 <Button variant="ghost" className="glass-button">
@@ -121,20 +129,28 @@ export default function ForgotPassword() {
                   </div>
                   <div className="absolute -top-2 -right-2 w-6 h-6 bg-warning-orange rounded-full animate-ping" />
                 </div>
-                
+
                 <h1 className="text-4xl font-bold text-foreground mb-4">
                   Forgot Password?
                 </h1>
                 <p className="text-foreground/70 leading-relaxed">
-                  No worries! Enter your email address and we'll send you a reset link
+                  No worries! Enter your email address and we'll send you a
+                  reset link
                 </p>
               </div>
 
-              <GlassCard variant="primary" size="lg" hover="lift" className="slide-up">
+              <GlassCard
+                variant="primary"
+                size="lg"
+                hover="lift"
+                className="slide-up"
+              >
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Email Field */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">Email Address</label>
+                    <label className="text-sm font-medium text-foreground">
+                      Email Address
+                    </label>
                     <div className="relative">
                       <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                         <Mail className="h-5 w-5 text-primary/60" />
@@ -146,9 +162,9 @@ export default function ForgotPassword() {
                         placeholder="Enter your email address"
                         className={cn(
                           "w-full pl-10 pr-4 py-3 bg-primary/10 border rounded-2xl outline-none transition-all duration-300 text-foreground placeholder-foreground/50",
-                          error 
-                            ? "border-health-red focus:border-health-red" 
-                            : "border-primary/30 focus:border-primary"
+                          error
+                            ? "border-health-red focus:border-health-red"
+                            : "border-primary/30 focus:border-primary",
                         )}
                         disabled={isLoading}
                       />
@@ -187,8 +203,8 @@ export default function ForgotPassword() {
 
                   {/* Back to Login */}
                   <div className="text-center pt-4">
-                    <Link 
-                      to="/login" 
+                    <Link
+                      to="/login"
                       className="text-sm text-primary hover:text-primary/80 font-medium transition-colors flex items-center justify-center"
                     >
                       <ArrowLeft className="h-4 w-4 mr-1" />
@@ -208,7 +224,7 @@ export default function ForgotPassword() {
                   </div>
                   <div className="absolute -top-2 -right-2 w-6 h-6 bg-cyber-green rounded-full animate-ping" />
                 </div>
-                
+
                 <h1 className="text-4xl font-bold text-foreground mb-4">
                   Check Your Email!
                 </h1>
@@ -220,16 +236,24 @@ export default function ForgotPassword() {
                 </p>
               </div>
 
-              <GlassCard variant="accent" size="lg" hover="lift" className="slide-up">
+              <GlassCard
+                variant="accent"
+                size="lg"
+                hover="lift"
+                className="slide-up"
+              >
                 <div className="space-y-6">
                   {/* Instructions */}
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3 p-4 bg-accent/10 rounded-2xl border border-accent/30">
                       <Mail className="h-5 w-5 text-accent mt-0.5" />
                       <div>
-                        <h3 className="font-semibold text-foreground mb-1">Check your inbox</h3>
+                        <h3 className="font-semibold text-foreground mb-1">
+                          Check your inbox
+                        </h3>
                         <p className="text-sm text-foreground/70">
-                          Click the link in the email to reset your password. The link will expire in 15 minutes.
+                          Click the link in the email to reset your password.
+                          The link will expire in 15 minutes.
                         </p>
                       </div>
                     </div>
@@ -237,9 +261,12 @@ export default function ForgotPassword() {
                     <div className="flex items-start space-x-3 p-4 bg-primary/10 rounded-2xl border border-primary/30">
                       <Clock className="h-5 w-5 text-primary mt-0.5" />
                       <div>
-                        <h3 className="font-semibold text-foreground mb-1">Didn't receive it?</h3>
+                        <h3 className="font-semibold text-foreground mb-1">
+                          Didn't receive it?
+                        </h3>
                         <p className="text-sm text-foreground/70">
-                          Check your spam folder or try resending the email below.
+                          Check your spam folder or try resending the email
+                          below.
                         </p>
                       </div>
                     </div>
@@ -267,7 +294,7 @@ export default function ForgotPassword() {
 
                   {resendCount > 0 && (
                     <p className="text-xs text-center text-foreground/60">
-                      Email sent {resendCount} time{resendCount > 1 ? 's' : ''}
+                      Email sent {resendCount} time{resendCount > 1 ? "s" : ""}
                     </p>
                   )}
 
@@ -305,15 +332,19 @@ export default function ForgotPassword() {
 
           {/* Help Links */}
           <div className="mt-6 text-center space-y-2">
-            <p className="text-sm text-foreground/60">
-              Need more help?
-            </p>
+            <p className="text-sm text-foreground/60">Need more help?</p>
             <div className="flex justify-center space-x-4">
-              <Link to="/help" className="text-sm text-primary hover:text-primary/80 transition-colors">
+              <Link
+                to="/help"
+                className="text-sm text-primary hover:text-primary/80 transition-colors"
+              >
                 Contact Support
               </Link>
               <span className="text-foreground/30">•</span>
-              <Link to="/about" className="text-sm text-primary hover:text-primary/80 transition-colors">
+              <Link
+                to="/about"
+                className="text-sm text-primary hover:text-primary/80 transition-colors"
+              >
                 FAQ
               </Link>
             </div>
