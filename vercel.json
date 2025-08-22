@@ -1,15 +1,6 @@
-{
+ {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/index.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "dist/spa/**/*",
-      "use": "@vercel/static"
-    }
-  ],
+  "buildCommand": "pnpm vercel-build",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -19,5 +10,10 @@
       "src": "/(.*)",
       "dest": "/api/index.js"
     }
-  ]
+  ],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30
+    }
+  }
 }
