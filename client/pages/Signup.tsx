@@ -179,12 +179,29 @@ export default function Signup() {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          dateOfBirth: formData.dateOfBirth,
+        }),
+      });
+      if (response.ok) {
+        window.location.href = "/login";
+      } else {
+        const data = await response.json();
+        setErrors({ general: data.message || "An error occurred" });
+      }
+    } catch (error) {
+      setErrors({ general: "An error occurred" });
+    } finally {
       setIsLoading(false);
-      // Redirect to onboarding
-      window.location.href = "/onboarding";
-    }, 2000);
+    }
   };
 
   const addArrayItem = (field: keyof FormData, item: string) => {

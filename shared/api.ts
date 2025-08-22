@@ -10,3 +10,12 @@
 export interface DemoResponse {
   message: string;
 }
+
+export interface DashboardMetrics {
+  healthScore: number;
+  heartRate: number;
+  waterIntake: number;
+  sleepHours: number;
+  stepsCount: number;
+  todayCalories: number;
+}
