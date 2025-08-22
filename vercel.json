@@ -10,11 +10,11 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/dist/server/production.mjs"
+      "dest": "dist/server/production.mjs"
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/server/production.mjs"
+      "dest": "dist/server/production.mjs"
     }
   ]
 }
