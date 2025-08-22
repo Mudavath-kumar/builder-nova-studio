@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import AIChatPage from "./pages/AIChat";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import { Brain, Upload, Shield, FileText, Bell, Settings, User, Stethoscope, Video, BarChart, Users, HelpCircle, Info, Phone, LogIn, UserPlus, KeyRound, BookOpen } from "lucide-react";
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/ai-chat" element={<AIChatPage />} />
 
           {/* Authentication Routes */}
           <Route path="/login" element={
