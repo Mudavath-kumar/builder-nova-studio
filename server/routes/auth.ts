@@ -14,7 +14,8 @@ const authSchema = z.object({
 
 export const register: RequestHandler = async (req, res) => {
   try {
-    const { email, password, firstName, lastName, dateOfBirth } = authSchema.parse(req.body);
+    const { email, password, firstName, lastName, dateOfBirth } =
+      authSchema.parse(req.body);
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
@@ -36,7 +37,9 @@ export const register: RequestHandler = async (req, res) => {
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      return res
+        .status(400)
+        .json({ message: "Invalid input", errors: error.errors });
     }
     res.status(500).json({ message: "Internal server error" });
   }
@@ -56,14 +59,20 @@ export const login: RequestHandler = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || "your_jwt_secret", {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET || "your_jwt_secret",
+      {
+        expiresIn: "1h",
+      },
+    );
 
     res.json({ token });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: "Invalid input", errors: error.errors });
+      return res
+        .status(400)
+        .json({ message: "Invalid input", errors: error.errors });
     }
     res.status(500).json({ message: "Internal server error" });
   }

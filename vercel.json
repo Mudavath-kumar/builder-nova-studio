@@ -1,20 +1,19 @@
-{
+ {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node",
-      "config": { "includeFiles": ["dist/**"] }
-    }
-  ],
+  "buildCommand": "pnpm vercel-build",
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "dist/server/production.mjs"
+      "dest": "/api/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "dist/server/production.mjs"
+      "dest": "/api/index.js"
     }
-  ]
+  ],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30
+    }
+  }
 }

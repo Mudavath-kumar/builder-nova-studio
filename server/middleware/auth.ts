@@ -11,7 +11,10 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "your_jwt_secret",
+    );
     if (typeof decoded === "object" && decoded.userId) {
       req.userId = decoded.userId;
     }

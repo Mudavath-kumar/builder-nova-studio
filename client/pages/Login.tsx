@@ -38,7 +38,8 @@ export default function Login() {
     setErrors({});
 
     // Basic validation
-    const newErrors: { email?: string; password?: string; general?: string } = {};
+    const newErrors: { email?: string; password?: string; general?: string } =
+      {};
     if (!email) newErrors.email = "Email is required";
     if (!password) newErrors.password = "Password is required";
     if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "Email is invalid";
