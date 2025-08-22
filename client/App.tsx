@@ -10,6 +10,10 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AIChatPage from "./pages/AIChat";
 import SymptomChecker from "./pages/SymptomChecker";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import Onboarding from "./pages/Onboarding";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import FloatingAIAssistant from "./components/ui/floating-ai-assistant";
@@ -50,48 +54,10 @@ const App = () => (
           <Route path="/symptom-checker" element={<SymptomChecker />} />
 
           {/* Authentication Routes */}
-          <Route
-            path="/login"
-            element={
-              <PlaceholderPage
-                title="Login"
-                description="Sign in to your HealPulse account to access your personalized health dashboard."
-                icon={<LogIn className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <PlaceholderPage
-                title="Sign Up"
-                description="Create your HealPulse account and start your health journey today."
-                icon={<UserPlus className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <PlaceholderPage
-                title="Forgot Password"
-                description="Reset your password to regain access to your account."
-                icon={<KeyRound className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
-
-          {/* Onboarding Routes */}
-          <Route
-            path="/onboarding"
-            element={
-              <PlaceholderPage
-                title="Welcome to HealPulse"
-                description="Let's get you set up with your personalized AI health assistant."
-                icon={<BookOpen className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/onboarding" element={<Onboarding />} />
 
           {/* Core Feature Routes - Already implemented above */}
           <Route
