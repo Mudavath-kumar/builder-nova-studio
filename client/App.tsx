@@ -209,4 +209,23 @@ const App = () => (
   </QueryClientProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  try {
+    createRoot(rootElement).render(<App />);
+  } catch (error) {
+    console.error('Failed to render React app:', error);
+    rootElement.innerHTML = `
+      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif; color: #ff6b6b;">
+        <h1>HealPulse AI Health Assistant</h1>
+        <p>Failed to load the application. Please refresh the page.</p>
+        <details>
+          <summary>Error Details</summary>
+          <pre>${error}</pre>
+        </details>
+      </div>
+    `;
+  }
+} else {
+  console.error('Root element not found');
+}
