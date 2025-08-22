@@ -1,289 +1,570 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, Brain, Upload, Shield, FileText, Bell, Pill, Activity, Calendar, TrendingUp, Plus, MessageCircle } from "lucide-react";
+import { GlassCard } from "@/components/ui/glass-card";
+import { 
+  Heart, 
+  Brain, 
+  Upload, 
+  Shield, 
+  FileText, 
+  Bell, 
+  Pill, 
+  Activity, 
+  Calendar, 
+  TrendingUp, 
+  Plus, 
+  MessageCircle,
+  Zap,
+  Users,
+  Clock,
+  Star,
+  Sparkles,
+  Bot,
+  Mic,
+  Camera,
+  Phone,
+  AlertCircle,
+  CheckCircle,
+  Map,
+  Stethoscope,
+  Thermometer,
+  Droplets,
+  Moon,
+  Sun,
+  Target,
+  Award,
+  Flame
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [healthScore, setHealthScore] = useState(85);
+  const [heartRate, setHeartRate] = useState(72);
+  const [waterIntake, setWaterIntake] = useState(6);
+  const [sleepHours, setSleepHours] = useState(7.5);
+  const [stepsCount, setStepsCount] = useState(8432);
+  const [todayCalories, setTodayCalories] = useState(1847);
+  const [isOnline, setIsOnline] = useState(true);
+
+  // Simulate real-time data updates
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    const healthInterval = setInterval(() => {
+      // Simulate real-time health metrics
+      setHeartRate(prev => {
+        const variation = Math.random() * 6 - 3; // ±3 bpm variation
+        return Math.max(60, Math.min(100, Math.round(prev + variation)));
+      });
+      
+      setHealthScore(prev => {
+        const variation = Math.random() * 2 - 1; // ±1 point variation
+        return Math.max(70, Math.min(100, Math.round(prev + variation)));
+      });
+      
+      setStepsCount(prev => prev + Math.floor(Math.random() * 5)); // Random step increases
+    }, 5000);
+
+    return () => {
+      clearInterval(timeInterval);
+      clearInterval(healthInterval);
+    };
+  }, []);
+
   const getGreeting = () => {
-    const hour = new Date().getHours();
+    const hour = currentTime.getHours();
     if (hour < 12) return "Good Morning";
     if (hour < 17) return "Good Afternoon";
     return "Good Evening";
   };
 
-  const healthScore = 85;
-
-  const reminders = [
-    { id: 1, text: "Take Vitamin D supplement", time: "9:00 AM", icon: Pill },
-    { id: 2, text: "Drink 8 glasses of water today", time: "Throughout day", icon: Activity },
-    { id: 3, text: "Schedule annual checkup", time: "This week", icon: Calendar },
-    { id: 4, text: "Review blood pressure readings", time: "Weekly", icon: Heart },
-  ];
+  const getHealthScoreColor = (score: number) => {
+    if (score >= 90) return "text-cyber-green";
+    if (score >= 75) return "text-primary";
+    if (score >= 60) return "text-warning-orange";
+    return "text-health-red";
+  };
 
   const quickActions = [
     {
-      title: "Symptom Check",
-      description: "AI-powered symptom analysis",
+      title: "AI Symptom Check",
+      description: "Instant health analysis",
       icon: Brain,
-      color: "bg-primary/10 text-primary",
-      path: "/symptom-checker"
+      gradient: "bg-neon-gradient",
+      path: "/symptom-checker",
+      glow: "shadow-neon"
     },
     {
-      title: "Upload Prescription",
-      description: "Scan and manage medications",
-      icon: Upload,
-      color: "bg-accent/20 text-accent",
-      path: "/prescription-upload"
+      title: "Voice Assistant",
+      description: "Hands-free consultation",
+      icon: Mic,
+      gradient: "bg-cyber-gradient",
+      path: "/ai-chat",
+      glow: "shadow-cyber"
     },
     {
-      title: "Emergency",
-      description: "Quick access to emergency aid",
+      title: "Scan Prescription",
+      description: "OCR medication scan",
+      icon: Camera,
+      gradient: "bg-health-gradient",
+      path: "/prescription-upload",
+      glow: "shadow-health"
+    },
+    {
+      title: "Emergency SOS",
+      description: "One-tap emergency call",
       icon: Shield,
-      color: "bg-red-100 text-red-500",
-      path: "/emergency"
+      gradient: "bg-gradient-to-r from-health-red to-warning-orange",
+      path: "/emergency",
+      glow: "shadow-intense"
+    }
+  ];
+
+  const healthMetrics = [
+    {
+      label: "Heart Rate",
+      value: heartRate,
+      unit: "BPM",
+      icon: Heart,
+      color: "text-health-red",
+      trend: "+2%",
+      isGood: heartRate >= 60 && heartRate <= 100
     },
     {
-      title: "Health Records",
-      description: "View your medical history",
-      icon: FileText,
-      color: "bg-blue-100 text-blue-500",
-      path: "/health-records"
+      label: "Water Intake",
+      value: waterIntake,
+      unit: "glasses",
+      icon: Droplets,
+      color: "text-neon-blue",
+      trend: "+1",
+      isGood: waterIntake >= 6
+    },
+    {
+      label: "Sleep Quality",
+      value: sleepHours,
+      unit: "hours",
+      icon: Moon,
+      color: "text-deep-purple",
+      trend: "+0.5h",
+      isGood: sleepHours >= 7
+    },
+    {
+      label: "Calories Burned",
+      value: todayCalories,
+      unit: "kcal",
+      icon: Flame,
+      color: "text-warning-orange",
+      trend: "+120",
+      isGood: todayCalories >= 1800
+    }
+  ];
+
+  const aiInsights = [
+    {
+      id: 1,
+      type: "recommendation",
+      title: "Hydration Reminder",
+      message: "You're doing great with water intake today! Try to reach 8 glasses for optimal hydration.",
+      icon: Droplets,
+      color: "text-neon-blue",
+      priority: "low"
+    },
+    {
+      id: 2,
+      type: "alert",
+      title: "Medication Reminder",
+      message: "Don't forget to take your evening vitamin D supplement in 2 hours.",
+      icon: Pill,
+      color: "text-warning-orange",
+      priority: "medium"
+    },
+    {
+      id: 3,
+      type: "insight",
+      title: "Health Pattern Detected",
+      message: "Your heart rate has been consistently healthy this week. Keep up the good work!",
+      icon: TrendingUp,
+      color: "text-cyber-green",
+      priority: "high"
+    }
+  ];
+
+  const recentActivity = [
+    {
+      action: "Completed AI symptom check",
+      time: "2 hours ago",
+      icon: Brain,
+      color: "text-primary"
+    },
+    {
+      action: "Updated medication schedule",
+      time: "1 day ago",
+      icon: Pill,
+      color: "text-accent"
+    },
+    {
+      action: "Emergency contact updated",
+      time: "3 days ago",
+      icon: Phone,
+      color: "text-health-red"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
+      {/* Animated Background */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute w-96 h-96 bg-neon-gradient rounded-full opacity-5 blur-3xl animate-float top-20 right-20" />
+        <div className="absolute w-64 h-64 bg-cyber-gradient rounded-full opacity-5 blur-3xl animate-float bottom-20 left-20" style={{ animationDelay: '3s' }} />
+      </div>
+
       {/* Header */}
-      <header className="border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+      <header className="relative z-10 border-b border-border/50 bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="p-2 bg-primary/10 rounded-2xl">
-                <Heart className="h-6 w-6 text-primary" />
+            <Link to="/" className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="p-3 bg-health-gradient rounded-3xl shadow-health">
+                  <Heart className="h-8 w-8 text-white heartbeat" />
+                </div>
+                <div className={cn(
+                  "absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-background",
+                  isOnline ? "bg-cyber-green animate-pulse" : "bg-gray-400"
+                )} />
               </div>
-              <span className="text-xl font-bold text-foreground">HealPulse</span>
+              <div>
+                <span className="text-2xl font-bold bg-health-gradient bg-clip-text text-transparent">
+                  HealPulse
+                </span>
+                <div className="text-xs text-foreground/60">
+                  {isOnline ? "AI Online" : "Offline"}
+                </div>
+              </div>
             </Link>
             
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon" className="rounded-2xl">
+              {/* Real-time Clock */}
+              <GlassCard variant="primary" size="sm" className="px-4 py-2">
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-mono">
+                    {currentTime.toLocaleTimeString([], { 
+                      hour: '2-digit', 
+                      minute: '2-digit',
+                      second: '2-digit'
+                    })}
+                  </span>
+                </div>
+              </GlassCard>
+              
+              <Button variant="ghost" size="icon" className="glass-button rounded-2xl">
                 <Bell className="h-5 w-5" />
               </Button>
-              <div className="neumorphic rounded-2xl p-2">
-                <div className="w-8 h-8 bg-primary/20 rounded-xl flex items-center justify-center">
-                  <span className="text-sm font-medium text-primary">A</span>
+              
+              <GlassCard variant="default" size="sm" className="p-2">
+                <div className="w-10 h-10 bg-primary/20 rounded-2xl flex items-center justify-center">
+                  <span className="text-sm font-bold text-primary">A</span>
                 </div>
-              </div>
+              </GlassCard>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-6 py-8">
-        {/* Greeting Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-2">
-            {getGreeting()}, Alex! 👋
-          </h1>
-          <p className="text-foreground/70 text-lg">How are you feeling today? Let's check on your health.</p>
+      <div className="relative z-10 container mx-auto px-6 py-8">
+        {/* Greeting & Status */}
+        <div className="mb-8 fade-in">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-2">
+                {getGreeting()}, Alex! 
+                <span className="text-3xl ml-2">👋</span>
+              </h1>
+              <p className="text-foreground/70 text-lg">
+                Your health is looking {healthScore >= 85 ? "excellent" : healthScore >= 70 ? "good" : "needs attention"} today
+              </p>
+            </div>
+            
+            <GlassCard variant="primary" size="sm" className="px-6 py-4">
+              <div className="text-center">
+                <div className={cn("text-3xl font-bold", getHealthScoreColor(healthScore))}>
+                  {healthScore}
+                </div>
+                <div className="text-xs text-foreground/60">Health Score</div>
+              </div>
+            </GlassCard>
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+        <div className="grid lg:grid-cols-4 gap-8">
+          {/* Main Content - Left Side */}
+          <div className="lg:col-span-3 space-y-8">
             {/* Quick Actions */}
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-6">Quick Actions</h2>
+            <section className="slide-up">
+              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center">
+                <Zap className="h-6 w-6 mr-3 text-primary" />
+                Quick Actions
+              </h2>
               <div className="grid md:grid-cols-2 gap-6">
                 {quickActions.map((action, index) => (
                   <Link key={index} to={action.path}>
-                    <div className="neumorphic rounded-3xl p-6 card-hover cursor-pointer bg-background">
-                      <div className="flex items-center space-x-4">
-                        <div className={`p-3 rounded-2xl ${action.color}`}>
-                          <action.icon className="h-6 w-6" />
+                    <GlassCard variant="default" size="lg" hover="intense" className="card-interactive group">
+                      <div className="flex items-center space-x-6">
+                        <div className={cn(
+                          "p-6 rounded-3xl transition-all duration-300 group-hover:scale-110",
+                          action.gradient,
+                          action.glow
+                        )}>
+                          <action.icon className="h-8 w-8 text-white" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-foreground">{action.title}</h3>
-                          <p className="text-sm text-foreground/70">{action.description}</p>
+                          <h3 className="text-xl font-bold text-foreground mb-2">{action.title}</h3>
+                          <p className="text-foreground/70">{action.description}</p>
                         </div>
                       </div>
-                    </div>
+                    </GlassCard>
                   </Link>
                 ))}
               </div>
             </section>
 
-            {/* Reminders & Tips */}
-            <section>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold text-foreground">Today's Reminders</h2>
-                <Button variant="ghost" size="sm" className="rounded-2xl">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Reminder
-                </Button>
-              </div>
-              
-              <div className="flex space-x-4 overflow-x-auto pb-4">
-                {reminders.map((reminder) => (
-                  <div key={reminder.id} className="neumorphic rounded-2xl p-4 min-w-[280px] bg-background">
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-primary/10 rounded-xl">
-                        <reminder.icon className="h-5 w-5 text-primary" />
+            {/* Health Metrics */}
+            <section className="slide-up">
+              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center">
+                <Activity className="h-6 w-6 mr-3 text-primary" />
+                Real-time Health Metrics
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {healthMetrics.map((metric, index) => (
+                  <GlassCard key={index} variant="primary" size="default" hover="lift" className="text-center">
+                    <div className="space-y-4">
+                      <div className="flex justify-center">
+                        <div className={cn(
+                          "p-4 rounded-2xl transition-all duration-300",
+                          metric.isGood ? "bg-cyber-green/20" : "bg-warning-orange/20"
+                        )}>
+                          <metric.icon className={cn("h-8 w-8", metric.color)} />
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-medium text-foreground text-sm">{reminder.text}</p>
-                        <p className="text-xs text-foreground/60">{reminder.time}</p>
+                      
+                      <div>
+                        <div className="text-3xl font-bold text-foreground">{metric.value}</div>
+                        <div className="text-sm text-foreground/60">{metric.unit}</div>
                       </div>
-                      <Button variant="ghost" size="sm" className="rounded-xl h-8 w-8 p-0">
-                        <Plus className="h-4 w-4" />
-                      </Button>
+                      
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-foreground/50">{metric.label}</span>
+                        <span className={cn(
+                          "text-xs font-medium",
+                          metric.isGood ? "text-cyber-green" : "text-warning-orange"
+                        )}>
+                          {metric.trend}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  </GlassCard>
                 ))}
               </div>
             </section>
 
-            {/* Recent Activity */}
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-6">Recent Activity</h2>
-              <div className="neumorphic rounded-3xl p-6 bg-background">
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4 p-4 bg-primary/5 rounded-2xl">
-                    <div className="p-2 bg-primary/10 rounded-xl">
-                      <Brain className="h-5 w-5 text-primary" />
+            {/* AI Insights */}
+            <section className="slide-up">
+              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center">
+                <Brain className="h-6 w-6 mr-3 text-primary" />
+                AI Health Insights
+                <Sparkles className="h-5 w-5 ml-2 text-neon-blue animate-pulse" />
+              </h2>
+              <div className="space-y-4">
+                {aiInsights.map((insight) => (
+                  <GlassCard key={insight.id} variant="neon" size="default" hover="lift">
+                    <div className="flex items-start space-x-4">
+                      <div className={cn(
+                        "p-3 rounded-2xl",
+                        insight.priority === 'high' ? 'bg-cyber-green/20' :
+                        insight.priority === 'medium' ? 'bg-warning-orange/20' :
+                        'bg-neon-blue/20'
+                      )}>
+                        <insight.icon className={cn("h-6 w-6", insight.color)} />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-semibold text-foreground">{insight.title}</h3>
+                          <div className={cn(
+                            "w-3 h-3 rounded-full",
+                            insight.priority === 'high' ? 'bg-cyber-green animate-pulse' :
+                            insight.priority === 'medium' ? 'bg-warning-orange animate-pulse' :
+                            'bg-neon-blue'
+                          )} />
+                        </div>
+                        <p className="text-foreground/70 text-sm leading-relaxed">{insight.message}</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-foreground">Symptom check completed</p>
-                      <p className="text-sm text-foreground/60">2 hours ago</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-4 p-4 bg-accent/10 rounded-2xl">
-                    <div className="p-2 bg-accent/20 rounded-xl">
-                      <Pill className="h-5 w-5 text-accent" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-foreground">Medication reminder set</p>
-                      <p className="text-sm text-foreground/60">Yesterday</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-4 p-4 bg-blue-50 rounded-2xl">
-                    <div className="p-2 bg-blue-100 rounded-xl">
-                      <FileText className="h-5 w-5 text-blue-500" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-foreground">Health record updated</p>
-                      <p className="text-sm text-foreground/60">3 days ago</p>
-                    </div>
-                  </div>
-                </div>
+                  </GlassCard>
+                ))}
               </div>
             </section>
           </div>
 
-          {/* Sidebar */}
+          {/* Sidebar - Right Side */}
           <div className="space-y-8">
-            {/* Health Score */}
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-6">Health Score</h2>
-              <div className="neumorphic rounded-3xl p-6 bg-background text-center">
-                <div className="relative w-32 h-32 mx-auto mb-4">
-                  <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
-                    <circle
-                      cx="60"
-                      cy="60"
-                      r="50"
-                      stroke="currentColor"
-                      strokeWidth="8"
-                      fill="transparent"
-                      className="text-gray-200"
-                    />
-                    <circle
-                      cx="60"
-                      cy="60"
-                      r="50"
-                      stroke="currentColor"
-                      strokeWidth="8"
-                      fill="transparent"
-                      strokeDasharray={`${2 * Math.PI * 50}`}
-                      strokeDashoffset={`${2 * Math.PI * 50 * (1 - healthScore / 100)}`}
-                      className="text-primary transition-all duration-1000"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">{healthScore}</div>
-                      <div className="text-xs text-foreground/60">Good</div>
+            {/* Health Score Visualization */}
+            <section className="slide-up">
+              <h2 className="text-xl font-bold text-foreground mb-6">Health Overview</h2>
+              <GlassCard variant="primary" size="lg" className="text-center">
+                <div className="space-y-6">
+                  {/* Circular Progress */}
+                  <div className="relative w-32 h-32 mx-auto">
+                    <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="50"
+                        stroke="currentColor"
+                        strokeWidth="8"
+                        fill="transparent"
+                        className="text-gray-200"
+                      />
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="50"
+                        stroke="currentColor"
+                        strokeWidth="8"
+                        fill="transparent"
+                        strokeDasharray={`${2 * Math.PI * 50}`}
+                        strokeDashoffset={`${2 * Math.PI * 50 * (1 - healthScore / 100)}`}
+                        className={cn(
+                          "transition-all duration-1000",
+                          getHealthScoreColor(healthScore)
+                        )}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className={cn("text-4xl font-bold", getHealthScoreColor(healthScore))}>
+                          {healthScore}
+                        </div>
+                        <div className="text-xs text-foreground/60">
+                          {healthScore >= 85 ? "Excellent" : healthScore >= 70 ? "Good" : "Needs Care"}
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  
+                  <p className="text-sm text-foreground/70">
+                    Your health score is updated in real-time based on your activities and metrics.
+                  </p>
+                  
+                  <Button variant="outline" size="sm" className="glass-button">
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    View Details
+                  </Button>
                 </div>
-                <p className="text-sm text-foreground/70 mb-4">
-                  Your health score is looking great! Keep up the good work.
-                </p>
-                <Button variant="outline" size="sm" className="rounded-2xl">
-                  <TrendingUp className="h-4 w-4 mr-2" />
-                  View Details
-                </Button>
-              </div>
+              </GlassCard>
             </section>
 
             {/* AI Assistant */}
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-6">AI Assistant</h2>
-              <div className="neumorphic rounded-3xl p-6 bg-gradient-to-br from-primary/5 to-accent/5">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
-                    <Brain className="h-8 w-8 text-primary" />
+            <section className="slide-up">
+              <h2 className="text-xl font-bold text-foreground mb-6">AI Assistant</h2>
+              <GlassCard variant="neon" size="lg" className="text-center">
+                <div className="space-y-6">
+                  <div className="relative">
+                    <div className="w-16 h-16 bg-neon-gradient rounded-3xl flex items-center justify-center mx-auto glow">
+                      <Bot className="h-8 w-8 text-white animate-pulse" />
+                    </div>
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-cyber-green rounded-full animate-ping" />
                   </div>
+                  
                   <div>
-                    <h3 className="font-semibold text-foreground mb-2">Ask me anything!</h3>
+                    <h3 className="font-bold text-foreground mb-2">Ready to Help!</h3>
                     <p className="text-sm text-foreground/70 mb-4">
-                      I'm here to help with health questions, symptoms, or medication guidance.
+                      I'm monitoring your health 24/7. Ask me anything about your symptoms or wellness.
                     </p>
                   </div>
-                  <Link to="/ai-chat">
-                    <Button className="rounded-2xl bg-primary hover:bg-primary/90 card-hover">
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Start Chat
-                    </Button>
-                  </Link>
+                  
+                  <div className="space-y-2">
+                    <Link to="/ai-chat">
+                      <Button className="w-full button-cyber text-black">
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        Start Chat
+                      </Button>
+                    </Link>
+                    <Link to="/ai-chat">
+                      <Button variant="outline" className="w-full glass-button">
+                        <Mic className="h-4 w-4 mr-2" />
+                        Voice Chat
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              </GlassCard>
+            </section>
+
+            {/* Recent Activity */}
+            <section className="slide-up">
+              <h2 className="text-xl font-bold text-foreground mb-6">Recent Activity</h2>
+              <GlassCard variant="default" size="default">
+                <div className="space-y-4">
+                  {recentActivity.map((activity, index) => (
+                    <div key={index} className="flex items-center space-x-4 p-3 bg-primary/5 rounded-2xl">
+                      <div className="p-2 bg-primary/10 rounded-xl">
+                        <activity.icon className={cn("h-4 w-4", activity.color)} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-foreground">{activity.action}</p>
+                        <p className="text-xs text-foreground/60">{activity.time}</p>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <Button variant="ghost" size="sm" className="w-full glass-button mt-4">
+                    View All Activity
+                  </Button>
+                </div>
+              </GlassCard>
             </section>
 
             {/* Quick Stats */}
-            <section>
-              <h2 className="text-2xl font-semibold text-foreground mb-6">This Week</h2>
+            <section className="slide-up">
+              <h2 className="text-xl font-bold text-foreground mb-6">Today's Goals</h2>
               <div className="space-y-4">
-                <div className="neumorphic rounded-2xl p-4 bg-background">
+                <GlassCard variant="accent" size="sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <Heart className="h-5 w-5 text-red-500" />
-                      <span className="text-sm font-medium">Heart Rate</span>
+                      <Target className="h-5 w-5 text-accent" />
+                      <span className="text-sm font-medium">Steps Goal</span>
                     </div>
-                    <span className="text-sm font-semibold text-primary">72 BPM</span>
+                    <span className="text-sm font-bold text-accent">{stepsCount}/10,000</span>
                   </div>
-                </div>
+                  <div className="mt-2 bg-accent/20 rounded-full h-2">
+                    <div 
+                      className="bg-accent rounded-full h-2 transition-all duration-500"
+                      style={{ width: `${Math.min(100, (stepsCount / 10000) * 100)}%` }}
+                    />
+                  </div>
+                </GlassCard>
                 
-                <div className="neumorphic rounded-2xl p-4 bg-background">
+                <GlassCard variant="primary" size="sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <Activity className="h-5 w-5 text-green-500" />
-                      <span className="text-sm font-medium">Steps</span>
+                      <Droplets className="h-5 w-5 text-neon-blue" />
+                      <span className="text-sm font-medium">Water Intake</span>
                     </div>
-                    <span className="text-sm font-semibold text-primary">8,432</span>
+                    <span className="text-sm font-bold text-neon-blue">{waterIntake}/8 glasses</span>
                   </div>
-                </div>
-                
-                <div className="neumorphic rounded-2xl p-4 bg-background">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Pill className="h-5 w-5 text-blue-500" />
-                      <span className="text-sm font-medium">Medications</span>
-                    </div>
-                    <span className="text-sm font-semibold text-primary">2/3 taken</span>
+                  <div className="mt-2 bg-neon-blue/20 rounded-full h-2">
+                    <div 
+                      className="bg-neon-blue rounded-full h-2 transition-all duration-500"
+                      style={{ width: `${Math.min(100, (waterIntake / 8) * 100)}%` }}
+                    />
                   </div>
-                </div>
+                </GlassCard>
               </div>
             </section>
           </div>
