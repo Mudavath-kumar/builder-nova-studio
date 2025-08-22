@@ -1,6 +1,7 @@
- {
+{
   "version": 2,
-  "buildCommand": "pnpm vercel-build",
+  "buildCommand": "pnpm vercel-build && mkdir -p public/assets && cp dist/spa/assets/* public/assets/ && cp dist/spa/index.html public/",
+  "outputDirectory": "public",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -8,7 +9,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/index.html"
     }
   ],
   "functions": {
