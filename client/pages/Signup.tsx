@@ -497,7 +497,7 @@ export default function Signup() {
                       type="text"
                       value={formData.height}
                       onChange={(e) => updateFormData('height', e.target.value)}
-                      placeholder="5'10\""
+                      placeholder="5'10''"
                       className="w-full px-4 py-3 bg-primary/10 border border-primary/30 rounded-2xl outline-none focus:border-primary transition-all duration-300"
                     />
                   </div>
