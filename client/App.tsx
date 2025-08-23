@@ -17,6 +17,8 @@ import Onboarding from "./pages/Onboarding";
 import PrescriptionUpload from "./pages/PrescriptionUpload";
 import Emergency from "./pages/Emergency";
 import HealthRecords from "./pages/HealthRecords";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import FloatingAIAssistant from "./components/ui/floating-ai-assistant";
@@ -58,6 +60,8 @@ const App = () => (
           <Route path="/prescription-upload" element={<PrescriptionUpload />} />
           <Route path="/emergency" element={<Emergency />} />
           <Route path="/health-records" element={<HealthRecords />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/settings" element={<Settings />} />
 
           {/* Authentication Routes */}
           <Route path="/login" element={<Login />} />
@@ -67,27 +71,7 @@ const App = () => (
 
           {/* Core Feature Routes - Already implemented above */}
 
-          {/* User Management Routes */}
-          <Route
-            path="/notifications"
-            element={
-              <PlaceholderPage
-                title="Notifications"
-                description="Manage your medication reminders and health alerts."
-                icon={<Bell className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <PlaceholderPage
-                title="Settings"
-                description="Customize your HealPulse experience and privacy preferences."
-                icon={<Settings className="h-12 w-12 text-primary" />}
-              />
-            }
-          />
+          {/* User Management Routes - Already implemented above */}
           <Route
             path="/profile"
             element={
