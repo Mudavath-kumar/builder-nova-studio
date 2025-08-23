@@ -16,6 +16,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Onboarding from "./pages/Onboarding";
 import PrescriptionUpload from "./pages/PrescriptionUpload";
 import Emergency from "./pages/Emergency";
+import HealthRecords from "./pages/HealthRecords";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import NotFound from "./pages/NotFound";
 import FloatingAIAssistant from "./components/ui/floating-ai-assistant";
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/symptom-checker" element={<SymptomChecker />} />
           <Route path="/prescription-upload" element={<PrescriptionUpload />} />
           <Route path="/emergency" element={<Emergency />} />
+          <Route path="/health-records" element={<HealthRecords />} />
 
           {/* Authentication Routes */}
           <Route path="/login" element={<Login />} />
@@ -64,16 +66,6 @@ const App = () => (
           <Route path="/onboarding" element={<Onboarding />} />
 
           {/* Core Feature Routes - Already implemented above */}
-          <Route
-            path="/health-records"
-            element={
-              <PlaceholderPage
-                title="Health Records Timeline"
-                description="View and manage your complete medical history in one place."
-                icon={<FileText className="h-12 w-12 text-blue-500" />}
-              />
-            }
-          />
 
           {/* User Management Routes */}
           <Route
