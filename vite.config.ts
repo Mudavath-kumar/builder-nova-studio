@@ -6,8 +6,9 @@ import { createServer } from "./server";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
+    host: "127.0.0.1",
     port: 8080,
+    allowedHosts: [".clackypaas.com", "localhost", "127.0.0.1"],
     fs: {
       allow: ["./client", "./shared"],
       deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
@@ -15,6 +16,9 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     outDir: "dist/spa",
+  },
+  ssr: {
+    external: ["@prisma/client"],
   },
   plugins: [react(), expressPlugin()],
   resolve: {

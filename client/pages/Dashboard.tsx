@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { DashboardMetrics } from "@shared/api";
 import { Button } from "@/components/ui/button";
+import { fetchWithAuth } from "../lib/api";
 import { GlassCard } from "@/components/ui/glass-card";
 import {
   Heart,
@@ -40,13 +43,22 @@ import { cn } from "@/lib/utils";
 
 export default function Dashboard() {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [healthScore, setHealthScore] = useState(85);
-  const [heartRate, setHeartRate] = useState(72);
-  const [waterIntake, setWaterIntake] = useState(6);
-  const [sleepHours, setSleepHours] = useState(7.5);
-  const [stepsCount, setStepsCount] = useState(8432);
-  const [todayCalories, setTodayCalories] = useState(1847);
   const [isOnline, setIsOnline] = useState(true);
+
+  const {
+    data: metrics,
+    isLoading,
+    isError,
+  } = useQuery<DashboardMetrics>({
+    queryKey: ["dashboardMetrics"],
+    queryFn: async () => {
+      const response = await fetchWithAuth("/api/dashboard/metrics");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    },
+  });
 
   // Simulate real-time data updates
   useEffect(() => {
@@ -54,24 +66,8 @@ export default function Dashboard() {
       setCurrentTime(new Date());
     }, 1000);
 
-    const healthInterval = setInterval(() => {
-      // Simulate real-time health metrics
-      setHeartRate((prev) => {
-        const variation = Math.random() * 6 - 3; // ±3 bpm variation
-        return Math.max(60, Math.min(100, Math.round(prev + variation)));
-      });
-
-      setHealthScore((prev) => {
-        const variation = Math.random() * 2 - 1; // ±1 point variation
-        return Math.max(70, Math.min(100, Math.round(prev + variation)));
-      });
-
-      setStepsCount((prev) => prev + Math.floor(Math.random() * 5)); // Random step increases
-    }, 5000);
-
     return () => {
       clearInterval(timeInterval);
-      clearInterval(healthInterval);
     };
   }, []);
 
@@ -88,6 +84,23 @@ export default function Dashboard() {
     if (score >= 60) return "text-warning-orange";
     return "text-health-red";
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching data</div>;
+  }
+
+  const {
+    healthScore,
+    heartRate,
+    waterIntake,
+    sleepHours,
+    stepsCount,
+    todayCalories,
+  } = metrics!;
 
   const quickActions = [
     {

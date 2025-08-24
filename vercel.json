@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm vercel-build && rm -rf public && mkdir -p public/assets && cp -r dist/spa/* public/",
+  "outputDirectory": "public",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30
+    }
+  }
+}

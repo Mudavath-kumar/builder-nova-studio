@@ -26,9 +26,11 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {},
-  );
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    general?: string;
+  }>({});
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +38,8 @@ export default function Login() {
     setErrors({});
 
     // Basic validation
-    const newErrors: { email?: string; password?: string } = {};
+    const newErrors: { email?: string; password?: string; general?: string } =
+      {};
     if (!email) newErrors.email = "Email is required";
     if (!password) newErrors.password = "Password is required";
     if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = "Email is invalid";
@@ -47,12 +50,26 @@ export default function Login() {
       return;
     }
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem("token", token);
+        window.location.href = "/dashboard";
+      } else {
+        const data = await response.json();
+        setErrors({ general: data.message || "An error occurred" });
+      }
+    } catch (error) {
+      setErrors({ general: "An error occurred" });
+    } finally {
       setIsLoading(false);
-      // Redirect to dashboard
-      window.location.href = "/dashboard";
-    }, 2000);
+    }
   };
 
   const handleSocialLogin = (provider: string) => {
